@@ -31,7 +31,6 @@ import android.content.SharedPreferences;
 import android.content.res.TypedArray;
 import android.net.Uri;
 import android.os.Bundle;
-import android.preference.PreferenceManager;
 import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuItem;
@@ -74,6 +73,7 @@ import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentActivity;
+import androidx.preference.PreferenceManager;
 import androidx.recyclerview.widget.RecyclerView;
 
 import static org.catrobat.catroid.CatroidApplication.defaultSystemLanguage;
@@ -741,10 +741,12 @@ public class CategoryListFragment extends Fragment implements CategoryListRVAdap
 				.setPositiveButton(getString(R.string.ok), (dialog, selectedPort, selectedSensor) -> {
 					if (type == Constants.NXT) {
 						SettingsFragment.setLegoMindstormsNXTSensorMapping(getActivity(),
-								(NXTSensor.Sensor) selectedSensor, SettingsFragment.NXT_SENSORS[selectedPort]);
+								(NXTSensor.Sensor) selectedSensor,
+								SettingsFragment.getNXT_SENSORS()[selectedPort]);
 					} else if (type == Constants.EV3) {
 						SettingsFragment.setLegoMindstormsEV3SensorMapping(getActivity(),
-								(EV3Sensor.Sensor) selectedSensor, SettingsFragment.EV3_SENSORS[selectedPort]);
+								(EV3Sensor.Sensor) selectedSensor,
+								SettingsFragment.getEV3_SENSORS()[selectedPort]);
 					}
 
 					FormulaEditorFragment formulaEditor = (FormulaEditorFragment) getFragmentManager()

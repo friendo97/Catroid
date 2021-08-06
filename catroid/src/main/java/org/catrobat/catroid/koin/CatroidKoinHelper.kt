@@ -103,6 +103,10 @@ val repositoryModules = module {
     single {
         DefaultProjectCategoriesRepository(get()) as ProjectCategoriesRepository
     }
+
+    single {
+        DefaultWebAccessRepository() as WebAccessRepository
+    }
 }
 
 val adapterModules = module {

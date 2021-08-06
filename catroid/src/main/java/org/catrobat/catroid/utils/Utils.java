@@ -34,7 +34,6 @@ import android.content.res.AssetManager;
 import android.net.ConnectivityManager;
 import android.net.NetworkInfo;
 import android.os.Bundle;
-import android.preference.PreferenceManager;
 import android.util.Log;
 import android.view.View;
 import android.view.WindowManager;
@@ -76,6 +75,7 @@ import java.util.regex.Pattern;
 
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.exifinterface.media.ExifInterface;
+import androidx.preference.PreferenceManager;
 import okhttp3.Response;
 
 import static android.speech.RecognizerIntent.ACTION_GET_LANGUAGE_DETAILS;

@@ -1,6 +1,6 @@
 /*
  * Catroid: An on-device visual programming system for Android devices
- * Copyright (C) 2010-2022 The Catrobat Team
+ * Copyright (C) 2010-2021 The Catrobat Team
  * (<http://developer.catrobat.org/credits>)
  *
  * This program is free software: you can redistribute it and/or modify
@@ -20,35 +20,27 @@
  * You should have received a copy of the GNU Affero General Public License
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
-package org.catrobat.catroid.ui
 
-import android.content.Context
-import android.content.SharedPreferences
-import android.os.Process
-import androidx.preference.PreferenceManager
-import android.util.Log
-import kotlin.system.exitProcess
+package org.catrobat.catroid.ui.settingsfragments.webaccess
 
-private const val EXIT_CODE = 10
+import org.catrobat.catroid.common.Nameable
 
-open class BaseExceptionHandler(context: Context) : Thread.UncaughtExceptionHandler {
-
-    private val preferences: SharedPreferences = PreferenceManager.getDefaultSharedPreferences(context)
-
-    override fun uncaughtException(thread: Thread, exception: Throwable) {
-        Log.e(TAG, "uncaughtException: ", exception)
-        preferences.edit()
-            .putBoolean(RECOVERED_FROM_CRASH, true)
-            .apply()
-        exit()
+class TrustedDomain(private var domain: String) : Nameable {
+    override fun getName(): String {
+        return domain
     }
 
-    protected fun exit() {
-        Process.killProcess(Process.myPid())
-        exitProcess(EXIT_CODE)
+    override fun setName(name: String) {
+        this.domain = name
     }
 
-    companion object {
-        private val TAG = BaseExceptionHandler::class.java.simpleName
+    override fun equals(other: Any?): Boolean {
+        return if (other is TrustedDomain) {
+            domain == other.domain
+        } else false
+    }
+
+    override fun hashCode(): Int {
+        return domain.hashCode()
     }
 }

@@ -24,6 +24,7 @@ package org.catrobat.catroid.ui.fragment
 
 import android.content.Context
 import android.os.Bundle
+import androidx.preference.PreferenceManager
 import android.view.LayoutInflater
 import android.view.Menu
 import android.view.MenuItem
