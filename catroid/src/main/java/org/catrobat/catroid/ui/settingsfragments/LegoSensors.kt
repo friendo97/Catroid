@@ -21,22 +21,22 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-package org.catrobat.catroid.ui.settingsfragments.webaccess
+package org.catrobat.catroid.ui.settingsfragments
 
-import org.catrobat.catroid.common.Nameable
+object LegoSensors {
+    @JvmField
+    var NXT_SENSORS = arrayOf(
+        "setting_mindstorms_nxt_sensor_1",
+        "setting_mindstorms_nxt_sensor_2",
+        "setting_mindstorms_nxt_sensor_3",
+        "setting_mindstorms_nxt_sensor_4"
+    )
 
-class TrustedDomain(private var domain: String) : Nameable {
-    override fun getName() = domain
-
-    override fun setName(name: String) {
-        this.domain = name
-    }
-
-    override fun equals(other: Any?): Boolean {
-        return if (other is TrustedDomain) {
-            domain == other.domain
-        } else false
-    }
-
-    override fun hashCode() = domain.hashCode()
+    @JvmField
+    var EV3_SENSORS = arrayOf(
+        "setting_mindstorms_ev3_sensor_1",
+        "setting_mindstorms_ev3_sensor_2",
+        "setting_mindstorms_ev3_sensor_3",
+        "setting_mindstorms_ev3_sensor_4"
+    )
 }

@@ -173,6 +173,7 @@
     <string name="preference_description_ai_object_recognition">Enable object recognition and tracking sensors</string>
 
     <string name="preference_title_accessibility">Accessibility</string>
+    <string name="preference_title_manage_extensions">Manage extensions</string>
     <string name="preference_description_accessibility">Change the app\'s appearance</string>
     <string name="preference_title_accessibility_profiles">Accessibility profiles</string>
     <string name="preference_title_accessibility_profile">Predefined profiles</string>

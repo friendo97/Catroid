@@ -62,25 +62,25 @@ import static junit.framework.Assert.assertTrue;
 import static org.catrobat.catroid.common.SharedPreferenceKeys.ACCESSIBILITY_PROFILE_PREFERENCE_KEY;
 import static org.catrobat.catroid.common.SharedPreferenceKeys.DEVICE_LANGUAGE;
 import static org.catrobat.catroid.common.SharedPreferenceKeys.LANGUAGE_TAGS;
-import static org.catrobat.catroid.ui.settingsfragments.SettingsFragment.SETTINGS_CAST_GLOBALLY_ENABLED;
-import static org.catrobat.catroid.ui.settingsfragments.SettingsFragment.SETTINGS_CRASH_REPORTS;
-import static org.catrobat.catroid.ui.settingsfragments.SettingsFragment.SETTINGS_MINDSTORMS_EV3_BRICKS_ENABLED;
-import static org.catrobat.catroid.ui.settingsfragments.SettingsFragment.SETTINGS_MINDSTORMS_EV3_SHOW_SENSOR_INFO_BOX_DISABLED;
-import static org.catrobat.catroid.ui.settingsfragments.SettingsFragment.SETTINGS_MINDSTORMS_NXT_BRICKS_ENABLED;
-import static org.catrobat.catroid.ui.settingsfragments.SettingsFragment.SETTINGS_MINDSTORMS_NXT_SHOW_SENSOR_INFO_BOX_DISABLED;
-import static org.catrobat.catroid.ui.settingsfragments.SettingsFragment.SETTINGS_MULTIPLAYER_VARIABLES_ENABLED;
-import static org.catrobat.catroid.ui.settingsfragments.SettingsFragment.SETTINGS_SHOW_AI_FACE_DETECTION_SENSORS;
-import static org.catrobat.catroid.ui.settingsfragments.SettingsFragment.SETTINGS_SHOW_AI_POSE_DETECTION_SENSORS;
-import static org.catrobat.catroid.ui.settingsfragments.SettingsFragment.SETTINGS_SHOW_AI_SPEECH_RECOGNITION_SENSORS;
-import static org.catrobat.catroid.ui.settingsfragments.SettingsFragment.SETTINGS_SHOW_AI_SPEECH_SYNTHETIZATION_SENSORS;
-import static org.catrobat.catroid.ui.settingsfragments.SettingsFragment.SETTINGS_SHOW_AI_TEXT_RECOGNITION_SENSORS;
-import static org.catrobat.catroid.ui.settingsfragments.SettingsFragment.SETTINGS_SHOW_ARDUINO_BRICKS;
-import static org.catrobat.catroid.ui.settingsfragments.SettingsFragment.SETTINGS_SHOW_HINTS;
-import static org.catrobat.catroid.ui.settingsfragments.SettingsFragment.SETTINGS_SHOW_JUMPING_SUMO_BRICKS;
-import static org.catrobat.catroid.ui.settingsfragments.SettingsFragment.SETTINGS_SHOW_NFC_BRICKS;
-import static org.catrobat.catroid.ui.settingsfragments.SettingsFragment.SETTINGS_SHOW_PARROT_AR_DRONE_BRICKS;
-import static org.catrobat.catroid.ui.settingsfragments.SettingsFragment.SETTINGS_SHOW_PHIRO_BRICKS;
-import static org.catrobat.catroid.ui.settingsfragments.SettingsFragment.SETTINGS_SHOW_RASPI_BRICKS;
+import static org.catrobat.catroid.ui.settingsfragments.SettingsFragmentKt.SETTINGS_CAST_GLOBALLY_ENABLED;
+import static org.catrobat.catroid.ui.settingsfragments.SettingsFragmentKt.SETTINGS_CRASH_REPORTS;
+import static org.catrobat.catroid.ui.settingsfragments.SettingsFragmentKt.SETTINGS_MINDSTORMS_EV3_BRICKS_ENABLED;
+import static org.catrobat.catroid.ui.settingsfragments.SettingsFragmentKt.SETTINGS_MINDSTORMS_EV3_SHOW_SENSOR_INFO_BOX_DISABLED;
+import static org.catrobat.catroid.ui.settingsfragments.SettingsFragmentKt.SETTINGS_MINDSTORMS_NXT_BRICKS_ENABLED;
+import static org.catrobat.catroid.ui.settingsfragments.SettingsFragmentKt.SETTINGS_MINDSTORMS_NXT_SHOW_SENSOR_INFO_BOX_DISABLED;
+import static org.catrobat.catroid.ui.settingsfragments.SettingsFragmentKt.SETTINGS_MULTIPLAYER_VARIABLES_ENABLED;
+import static org.catrobat.catroid.ui.settingsfragments.SettingsFragmentKt.SETTINGS_SHOW_AI_FACE_DETECTION_SENSORS;
+import static org.catrobat.catroid.ui.settingsfragments.SettingsFragmentKt.SETTINGS_SHOW_AI_POSE_DETECTION_SENSORS;
+import static org.catrobat.catroid.ui.settingsfragments.SettingsFragmentKt.SETTINGS_SHOW_AI_SPEECH_RECOGNITION_SENSORS;
+import static org.catrobat.catroid.ui.settingsfragments.SettingsFragmentKt.SETTINGS_SHOW_AI_SPEECH_SYNTHETIZATION_SENSORS;
+import static org.catrobat.catroid.ui.settingsfragments.SettingsFragmentKt.SETTINGS_SHOW_AI_TEXT_RECOGNITION_SENSORS;
+import static org.catrobat.catroid.ui.settingsfragments.SettingsFragmentKt.SETTINGS_SHOW_ARDUINO_BRICKS;
+import static org.catrobat.catroid.ui.settingsfragments.SettingsFragmentKt.SETTINGS_SHOW_HINTS;
+import static org.catrobat.catroid.ui.settingsfragments.SettingsFragmentKt.SETTINGS_SHOW_JUMPING_SUMO_BRICKS;
+import static org.catrobat.catroid.ui.settingsfragments.SettingsFragmentKt.SETTINGS_SHOW_NFC_BRICKS;
+import static org.catrobat.catroid.ui.settingsfragments.SettingsFragmentKt.SETTINGS_SHOW_PARROT_AR_DRONE_BRICKS;
+import static org.catrobat.catroid.ui.settingsfragments.SettingsFragmentKt.SETTINGS_SHOW_PHIRO_BRICKS;
+import static org.catrobat.catroid.ui.settingsfragments.SettingsFragmentKt.SETTINGS_SHOW_RASPI_BRICKS;
 import static org.hamcrest.Matchers.hasToString;
 import static org.hamcrest.Matchers.instanceOf;
 import static org.hamcrest.core.AllOf.allOf;
@@ -91,10 +91,12 @@ import static androidx.test.espresso.Espresso.onView;
 import static androidx.test.espresso.action.ViewActions.click;
 import static androidx.test.espresso.action.ViewActions.typeText;
 import static androidx.test.espresso.assertion.ViewAssertions.matches;
+import static androidx.test.espresso.contrib.RecyclerViewActions.actionOnItem;
 import static androidx.test.espresso.intent.Intents.intended;
 import static androidx.test.espresso.intent.Intents.intending;
 import static androidx.test.espresso.intent.matcher.IntentMatchers.hasAction;
 import static androidx.test.espresso.intent.matcher.IntentMatchers.hasData;
+import static androidx.test.espresso.matcher.ViewMatchers.hasDescendant;
 import static androidx.test.espresso.matcher.ViewMatchers.isDisplayed;
 import static androidx.test.espresso.matcher.ViewMatchers.withId;
 import static androidx.test.espresso.matcher.ViewMatchers.withParent;
@@ -107,7 +109,7 @@ public class SettingsFragmentTest {
 	public BaseActivityTestRule<SettingsActivity> baseActivityTestRule = new
 			BaseActivityTestRule<>(SettingsActivity.class, true, false);
 
-	private List<String> allSettings = new ArrayList<>(Arrays.asList(SETTINGS_SHOW_ARDUINO_BRICKS,
+	private final List<String> allSettings = new ArrayList<>(Arrays.asList(SETTINGS_SHOW_ARDUINO_BRICKS,
 			SETTINGS_SHOW_PHIRO_BRICKS, SETTINGS_SHOW_NFC_BRICKS, SETTINGS_SHOW_HINTS, SETTINGS_CRASH_REPORTS,
 			SETTINGS_MINDSTORMS_NXT_BRICKS_ENABLED, SETTINGS_MINDSTORMS_NXT_SHOW_SENSOR_INFO_BOX_DISABLED,
 			SETTINGS_MINDSTORMS_EV3_BRICKS_ENABLED, SETTINGS_MINDSTORMS_EV3_SHOW_SENSOR_INFO_BOX_DISABLED,
@@ -117,7 +119,8 @@ public class SettingsFragmentTest {
 			SETTINGS_SHOW_AI_SPEECH_SYNTHETIZATION_SENSORS,
 			SETTINGS_SHOW_AI_FACE_DETECTION_SENSORS, SETTINGS_SHOW_AI_POSE_DETECTION_SENSORS,
 			SETTINGS_SHOW_AI_TEXT_RECOGNITION_SENSORS));
-	private Map<String, Boolean> initialSettings = new HashMap<>();
+
+	private final Map<String, Boolean> initialSettings = new HashMap<>();
 	private Matcher<Intent> expectedBrowserIntent;
 
 	@Before
@@ -167,84 +170,17 @@ public class SettingsFragmentTest {
 	@Category({Cat.AppUi.class, Level.Smoke.class})
 	@Test
 	public void basicSettingsTest() {
-		checkPreference(R.string.preference_title_enable_arduino_bricks, SETTINGS_SHOW_ARDUINO_BRICKS);
-		checkPreference(R.string.preference_title_enable_phiro_bricks, SETTINGS_SHOW_PHIRO_BRICKS);
-		checkPreference(R.string.preference_title_enable_jumpingsumo_bricks, SETTINGS_SHOW_JUMPING_SUMO_BRICKS);
-		checkPreference(R.string.preference_title_enable_nfc_bricks, SETTINGS_SHOW_NFC_BRICKS);
-		checkPreference(R.string.preference_title_enable_hints, SETTINGS_SHOW_HINTS);
-		checkPreference(R.string.preference_title_enable_crash_reports, SETTINGS_CRASH_REPORTS);
-		checkPreference(R.string.preference_title_cast_feature_globally_enabled, SETTINGS_CAST_GLOBALLY_ENABLED);
-		checkPreference(R.string.preference_title_multiplayer_variables_enabled, SETTINGS_MULTIPLAYER_VARIABLES_ENABLED);
+		switchPreference(R.string.preference_title_enable_hints, SETTINGS_SHOW_HINTS);
+		switchPreference(R.string.preference_title_enable_crash_reports, SETTINGS_CRASH_REPORTS);
 	}
 
 	@Category({Cat.AppUi.class, Level.Functional.class, Cat.Quarantine.class})
 	@Test
-	public void noMultipleSelectAccessibilityProfilesTest() {
-		onData(PreferenceMatchers.withTitle(R.string.preference_title_accessibility))
-				.perform(click());
+	public void openAccessibilitySettingsTest() {
+		clickOnSettingsItem(R.string.preference_title_accessibility);
 
-		onData(PreferenceMatchers.withTitle(R.string.preference_title_accessibility_predefined_profile_headline))
-				.perform(click());
-
-		onView(allOf(withId(R.id.radio_button), withParent(withId(R.id.argus))))
-				.perform(click());
-	}
-
-	@Category({Cat.AppUi.class, Level.Smoke.class, Cat.Gadgets.class})
-	@Test
-	public void legoNxtSettingsTest() {
-		onData(PreferenceMatchers.withTitle(R.string.preference_title_enable_mindstorms_nxt_bricks))
-				.perform(click());
-
-		checkPreference(R.string.preference_title_enable_mindstorms_nxt_bricks, SETTINGS_MINDSTORMS_NXT_BRICKS_ENABLED);
-		checkPreference(R.string.preference_disable_nxt_info_dialog, SETTINGS_MINDSTORMS_NXT_SHOW_SENSOR_INFO_BOX_DISABLED);
-	}
-
-	@Category({Cat.AppUi.class, Level.Smoke.class, Cat.Gadgets.class})
-	@Test
-	public void legoEv3SettingsTest() {
-		onData(PreferenceMatchers.withTitle(R.string.preference_title_enable_mindstorms_ev3_bricks))
-				.perform(click());
-
-		checkPreference(R.string.preference_title_enable_mindstorms_ev3_bricks, SETTINGS_MINDSTORMS_EV3_BRICKS_ENABLED);
-		checkPreference(R.string.preference_disable_nxt_info_dialog,
-				SETTINGS_MINDSTORMS_EV3_SHOW_SENSOR_INFO_BOX_DISABLED);
-	}
-
-	@Category({Cat.AppUi.class, Level.Smoke.class, Cat.Gadgets.class})
-	@Test
-	public void parrotArSettingsTest() {
-		onData(PreferenceMatchers.withTitle(R.string.preference_title_enable_quadcopter_bricks))
-				.perform(click());
-
-		checkPreference(R.string.preference_title_enable_quadcopter_bricks, SETTINGS_SHOW_PARROT_AR_DRONE_BRICKS);
-	}
-
-	@Category({Cat.AppUi.class, Level.Smoke.class, Cat.Gadgets.class})
-	@Test
-	public void rasPiSettingsTest() {
-		onData(PreferenceMatchers.withTitle(R.string.preference_title_enable_raspi_bricks))
-				.perform(click());
-
-		checkPreference(R.string.preference_title_enable_raspi_bricks, SETTINGS_SHOW_RASPI_BRICKS);
-	}
-
-	@Category({Cat.AppUi.class, Level.Smoke.class, Cat.Gadgets.class})
-	@Test
-	public void aiSettingsTest() {
-		onData(PreferenceMatchers.withTitle(R.string.preference_title_ai))
-				.perform(click());
-
-		checkPreference(R.string.preference_title_ai_speech_recognition,
-				SETTINGS_SHOW_AI_SPEECH_RECOGNITION_SENSORS);
-		checkPreference(R.string.preference_title_ai_speech_synthetization,
-				SETTINGS_SHOW_AI_SPEECH_SYNTHETIZATION_SENSORS);
-		checkPreference(R.string.preference_title_ai_face_detection,
-				SETTINGS_SHOW_AI_FACE_DETECTION_SENSORS);
-		checkPreference(R.string.preference_title_ai_pose_detection,
-				SETTINGS_SHOW_AI_POSE_DETECTION_SENSORS);
-		checkPreference(R.string.preference_title_ai_text_recognition,
-				SETTINGS_SHOW_AI_TEXT_RECOGNITION_SENSORS);
+		onView(withId(R.id.toolbar))
+				.check(matches(hasDescendant(withText(R.string.preference_title_accessibility))));
 	}
 
 	@Category({Cat.AppUi.class, Level.Smoke.class})
@@ -282,18 +218,21 @@ public class SettingsFragmentTest {
 		intended(expectedBrowserIntent);
 	}
 
-	private void checkPreference(int displayedTitleResourceString, String sharedPreferenceTag) {
+	private void switchPreference(int displayedTitleResourceString, String sharedPreferenceTag) {
 		SharedPreferences sharedPreferences = PreferenceManager
 				.getDefaultSharedPreferences(ApplicationProvider.getApplicationContext());
 
-		onData(PreferenceMatchers.withTitle(displayedTitleResourceString))
-				.perform(click());
+		clickOnSettingsItem(displayedTitleResourceString);
 
 		assertFalse(sharedPreferences.getBoolean(sharedPreferenceTag, false));
 
-		onData(PreferenceMatchers.withTitle(displayedTitleResourceString))
-				.perform(click());
+		clickOnSettingsItem(displayedTitleResourceString);
 
 		assertTrue(sharedPreferences.getBoolean(sharedPreferenceTag, false));
+	}
+	
+	private void clickOnSettingsItem(int resourceId) {
+		onView(withId(androidx.preference.R.id.recycler_view))
+				.perform(actionOnItem(hasDescendant(withText(resourceId)), click()));
 	}
 }

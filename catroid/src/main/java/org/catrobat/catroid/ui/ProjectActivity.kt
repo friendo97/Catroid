@@ -65,6 +65,8 @@ import org.catrobat.catroid.ui.recyclerview.fragment.RecyclerViewFragment
 import org.catrobat.catroid.ui.recyclerview.fragment.SceneListFragment
 import org.catrobat.catroid.ui.recyclerview.fragment.SpriteListFragment
 import org.catrobat.catroid.ui.recyclerview.util.UniqueNameProvider
+import org.catrobat.catroid.ui.settingsfragments.SETTINGS_MINDSTORMS_EV3_SHOW_SENSOR_INFO_BOX_DISABLED
+import org.catrobat.catroid.ui.settingsfragments.SETTINGS_MINDSTORMS_NXT_SHOW_SENSOR_INFO_BOX_DISABLED
 import org.catrobat.catroid.ui.settingsfragments.SettingsFragment
 import org.catrobat.catroid.utils.ToastUtil
 import org.catrobat.catroid.utils.Utils
@@ -448,11 +450,11 @@ class ProjectActivity : BaseCastActivity() {
     private fun showLegoSensorConfigInfo() {
         val preferences = PreferenceManager.getDefaultSharedPreferences(this)
         val nxtDialogDisabled = preferences.getBoolean(
-            SettingsFragment.SETTINGS_MINDSTORMS_NXT_SHOW_SENSOR_INFO_BOX_DISABLED,
+            SETTINGS_MINDSTORMS_NXT_SHOW_SENSOR_INFO_BOX_DISABLED,
             false
         )
         val ev3DialogDisabled = preferences.getBoolean(
-            SettingsFragment.SETTINGS_MINDSTORMS_EV3_SHOW_SENSOR_INFO_BOX_DISABLED,
+            SETTINGS_MINDSTORMS_EV3_SHOW_SENSOR_INFO_BOX_DISABLED,
             false
         )
         val resourcesSet = projectManager.currentProject.requiredResources

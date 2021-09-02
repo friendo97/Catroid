@@ -48,7 +48,7 @@ import org.catrobat.catroid.testsuites.annotations.Cat.AppUi
 import org.catrobat.catroid.testsuites.annotations.Level.Smoke
 import org.catrobat.catroid.ui.MainMenuActivity
 import org.catrobat.catroid.ui.ProjectActivity
-import org.catrobat.catroid.ui.settingsfragments.SettingsFragment.setLanguageSharedPreference
+import org.catrobat.catroid.ui.settingsfragments.SettingsFragment.Companion.setLanguageSharedPreference
 import org.catrobat.catroid.uiespresso.ui.fragment.rvutils.RecyclerViewInteractionWrapper
 import org.catrobat.catroid.uiespresso.ui.fragment.rvutils.RecyclerViewInteractionWrapper.onRecyclerView
 import org.catrobat.catroid.uiespresso.util.UiTestUtils

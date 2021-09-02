@@ -48,7 +48,7 @@ import org.catrobat.catroid.ui.recyclerview.dialog.textwatcher.DuplicateInputTex
 import org.catrobat.catroid.utils.ToastUtil
 import org.koin.android.ext.android.inject
 
-val WEB_ACCESS_SETTINGS_FRAGMENT_TAG = WebAccessSettingsFragment::class.java.simpleName
+val WEB_ACCESS_SETTINGS_FRAGMENT_TAG: String = WebAccessSettingsFragment::class.java.simpleName
 private const val NONE = 0
 private const val DELETE = 1
 
@@ -78,7 +78,6 @@ class WebAccessSettingsFragment : PreferenceFragmentCompat(),
             .takeIf { it is AppCompatActivity }
             .let { it as AppCompatActivity }
             .apply {
-                setSupportActionBar(findViewById(R.id.toolbar))
                 supportActionBar?.setTitle(R.string.preference_title_web_access)
             }
     }
@@ -86,6 +85,12 @@ class WebAccessSettingsFragment : PreferenceFragmentCompat(),
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setHasOptionsMenu(true)
+    }
+
+    override fun onPrepareOptionsMenu(menu: Menu) {
+        menu.findItem(R.id.menu_item_help)?.isVisible = true
+        menu.findItem(R.id.menu_item_delete)?.isVisible = true
+        super.onPrepareOptionsMenu(menu)
     }
 
     override fun onCreatePreferences(
@@ -121,10 +126,10 @@ class WebAccessSettingsFragment : PreferenceFragmentCompat(),
             }
         }
 
-        repository.getUserTrustList().observe(viewLifecycleOwner, Observer { list ->
+        repository.getUserTrustList().observe(viewLifecycleOwner) { list ->
             adapter.setItems(list)
             domainsList.addAll(list.map { it.name })
-        })
+        }
     }
 
     override fun onDestroyView() {
@@ -151,8 +156,8 @@ class WebAccessSettingsFragment : PreferenceFragmentCompat(),
     }
 
     private fun showDialog() {
-        val list = listOf<StringOption>()
-        val textWatcher = DuplicateInputTextWatcher<StringOption>(list)
+        val scopeList = domainsList.map { StringOption(it) }
+        val textWatcher = DuplicateInputTextWatcher(scopeList)
         TextInputDialog.Builder(requireContext())
             .setTextWatcher(textWatcher)
             .setPositiveButton(getString(R.string.ok)) { _, textInput: String? ->

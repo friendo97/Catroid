@@ -32,10 +32,10 @@ import org.catrobat.catroid.camera.mlkitdetectors.FaceDetector
 import org.catrobat.catroid.camera.mlkitdetectors.ObjectDetector
 import org.catrobat.catroid.camera.mlkitdetectors.PoseDetector
 import org.catrobat.catroid.camera.mlkitdetectors.TextDetector
-import org.catrobat.catroid.ui.settingsfragments.SettingsFragment.isAIFaceDetectionSharedPreferenceEnabled
-import org.catrobat.catroid.ui.settingsfragments.SettingsFragment.isAIObjectDetectionSharedPreferenceEnabled
-import org.catrobat.catroid.ui.settingsfragments.SettingsFragment.isAIPoseDetectionSharedPreferenceEnabled
-import org.catrobat.catroid.ui.settingsfragments.SettingsFragment.isAITextRecognitionSharedPreferenceEnabled
+import org.catrobat.catroid.ui.settingsfragments.SettingsFragment.Companion.isAIObjectDetectionSharedPreferenceEnabled
+import org.catrobat.catroid.ui.settingsfragments.SettingsFragment.Companion.isAIPoseDetectionSharedPreferenceEnabled
+import org.catrobat.catroid.ui.settingsfragments.SettingsFragment.Companion.isAITextRecognitionSharedPreferenceEnabled
+import org.catrobat.catroid.ui.settingsfragments.SettingsFragment.Companion.isAIFaceDetectionSharedPreferenceEnabled as isAIFaceDetectionSharedPreferenceEnabled1
 
 object CatdroidImageAnalyzer : ImageAnalysis.Analyzer {
     const val DETECTION_PROCESS_ERROR_MESSAGE: String = "Could not analyze image."
@@ -54,17 +54,17 @@ object CatdroidImageAnalyzer : ImageAnalysis.Analyzer {
 
     fun setActiveDetectorsWithContext(context: Context?) {
         activeDetectors.clear()
-        context?.let {
-            if (isAIFaceDetectionSharedPreferenceEnabled(it)) {
+        context?.let { context ->
+            if (isAIFaceDetectionSharedPreferenceEnabled1(context)) {
                 activeDetectors.add(FaceDetector)
             }
-            if (isAIPoseDetectionSharedPreferenceEnabled(it)) {
+            if (isAIPoseDetectionSharedPreferenceEnabled(context)) {
                 activeDetectors.add(PoseDetector)
             }
-            if (isAITextRecognitionSharedPreferenceEnabled(it)) {
+            if (isAITextRecognitionSharedPreferenceEnabled(context)) {
                 activeDetectors.add(TextDetector)
             }
-            if (isAIObjectDetectionSharedPreferenceEnabled(it)) {
+            if (isAIObjectDetectionSharedPreferenceEnabled(context)) {
                 activeDetectors.add(ObjectDetector)
             }
         }

@@ -25,6 +25,7 @@ package org.catrobat.catroid.ui.recyclerview.dialog
 
 import android.app.Dialog
 import android.content.ContentResolver
+import android.content.Context
 import android.content.DialogInterface
 import android.content.Intent
 import android.net.Uri
@@ -155,7 +156,7 @@ class NewSpriteDialogFragment(
         }
     }
 
-    private fun showCastDialog(): Boolean = SettingsFragment.isCastSharedPreferenceEnabled(activity) &&
+    private fun showCastDialog(): Boolean = SettingsFragment.isCastSharedPreferenceEnabled(activity as Context) &&
         ProjectManager.getInstance().currentProject.isCastProject &&
         !CastManager.getInstance().isConnected
 

@@ -80,6 +80,8 @@ import static org.catrobat.catroid.CatroidApplication.defaultSystemLanguage;
 import static org.catrobat.catroid.common.SharedPreferenceKeys.DEVICE_LANGUAGE;
 import static org.catrobat.catroid.common.SharedPreferenceKeys.LANGUAGE_TAGS;
 import static org.catrobat.catroid.common.SharedPreferenceKeys.LANGUAGE_TAG_KEY;
+import static org.catrobat.catroid.ui.settingsfragments.LegoSensors.EV3_SENSORS;
+import static org.catrobat.catroid.ui.settingsfragments.LegoSensors.NXT_SENSORS;
 import static org.catrobat.catroid.ui.fragment.FormulaEditorFragment.FORMULA_EDITOR_FRAGMENT_TAG;
 import static org.koin.java.KoinJavaComponent.get;
 
@@ -742,11 +744,11 @@ public class CategoryListFragment extends Fragment implements CategoryListRVAdap
 					if (type == Constants.NXT) {
 						SettingsFragment.setLegoMindstormsNXTSensorMapping(getActivity(),
 								(NXTSensor.Sensor) selectedSensor,
-								SettingsFragment.getNXT_SENSORS()[selectedPort]);
+								NXT_SENSORS[selectedPort]);
 					} else if (type == Constants.EV3) {
 						SettingsFragment.setLegoMindstormsEV3SensorMapping(getActivity(),
 								(EV3Sensor.Sensor) selectedSensor,
-								SettingsFragment.getEV3_SENSORS()[selectedPort]);
+								EV3_SENSORS[selectedPort]);
 					}
 
 					FormulaEditorFragment formulaEditor = (FormulaEditorFragment) getFragmentManager()

@@ -48,6 +48,8 @@ import org.catrobat.catroid.ui.recyclerview.repository.DefaultProjectCategoriesR
 import org.catrobat.catroid.ui.recyclerview.repository.FeaturedProjectsRepository
 import org.catrobat.catroid.ui.recyclerview.repository.ProjectCategoriesRepository
 import org.catrobat.catroid.ui.recyclerview.viewmodel.MainFragmentViewModel
+import org.catrobat.catroid.ui.settingsfragments.webaccess.DefaultWebAccessRepository
+import org.catrobat.catroid.ui.settingsfragments.webaccess.WebAccessRepository
 import org.catrobat.catroid.utils.MobileServiceAvailability
 import org.catrobat.catroid.utils.NetworkConnectionMonitor
 import org.koin.android.ext.koin.androidContext
