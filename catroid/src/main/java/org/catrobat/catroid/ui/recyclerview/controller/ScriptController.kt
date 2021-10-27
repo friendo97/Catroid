@@ -45,7 +45,10 @@ import org.catrobat.catroid.content.bricks.UserVariableBrickInterface
 import org.catrobat.catroid.content.bricks.WhenBackgroundChangesBrick
 import org.catrobat.catroid.formulaeditor.UserData
 import org.catrobat.catroid.formulaeditor.UserDataWrapper
+import org.catrobat.catroid.formulaeditor.UserList
+import org.catrobat.catroid.formulaeditor.UserVariable
 import org.catrobat.catroid.ui.controller.BackpackListManager
+import org.catrobat.catroid.ui.recyclerview.util.UniqueNameProvider
 import org.koin.java.KoinJavaComponent
 import java.io.IOException
 import java.util.ArrayList
@@ -57,6 +60,9 @@ class ScriptController {
 
     companion object {
         val TAG = ScriptController::class.java.simpleName
+        const val GLOBAL_USER_VARIABLE = 0
+        const val LOCAL_USER_VARIABLE = 1
+        const val MULTIPLAYER_USER_VARIABLE = 2
     }
 
     @Throws(IOException::class, CloneNotSupportedException::class)
@@ -74,23 +80,23 @@ class ScriptController {
         for (brick in scriptFlatBrickList) {
             when (brick) {
                 is SetLookBrick ->
-                    brick.look = brick.look?.let {
-                        lookController.findOrCopy(it, destinationScene, destinationSprite)
+                    brick.look = brick.look?.let { look ->
+                        lookController.findOrCopy(look, destinationScene, destinationSprite)
                     }
 
                 is WhenBackgroundChangesBrick ->
-                    brick.look = brick.look?.let {
-                        lookController.findOrCopy(it, destinationScene, destinationSprite)
+                    brick.look = brick.look?.let { look ->
+                        lookController.findOrCopy(look, destinationScene, destinationSprite)
                     }
 
                 is PlaySoundBrick ->
-                    brick.sound = brick.sound?.let {
-                        soundController.findOrCopy(it, destinationScene, destinationSprite)
+                    brick.sound = brick.sound?.let { sound ->
+                        soundController.findOrCopy(sound, destinationScene, destinationSprite)
                     }
 
                 is PlaySoundAndWaitBrick ->
-                    brick.sound = brick.sound?.let {
-                        soundController.findOrCopy(it, destinationScene, destinationSprite)
+                    brick.sound = brick.sound?.let { sound ->
+                        soundController.findOrCopy(sound, destinationScene, destinationSprite)
                     }
 
                 is UserVariableBrickInterface ->
@@ -114,21 +120,73 @@ class ScriptController {
     fun pack(groupName: String?, bricksToPack: List<Brick>?) {
         val scriptsToPack: MutableList<Script> = ArrayList()
         val userDefinedBrickListToPack: MutableList<UserDefinedBrick> = ArrayList()
-        bricksToPack?.forEach() {
-            if (it is ScriptBrick) {
-                if (it is UserDefinedReceiverBrick) {
-                    val userDefinedBrick = it.userDefinedBrick
+        bricksToPack?.forEach() { brick ->
+            if (brick is ScriptBrick) {
+                if (brick is UserDefinedReceiverBrick) {
+                    val userDefinedBrick = brick.userDefinedBrick
                     userDefinedBrickListToPack.add(userDefinedBrick.clone() as UserDefinedBrick)
                 }
-                val scriptToPack = it.getScript()
+                val scriptToPack = brick.getScript()
                 scriptsToPack.add(scriptToPack.clone())
             }
+            checkForUserData(brick, groupName)
         }
-        BackpackListManager.getInstance()
-            .addUserDefinedBrickToBackPack(groupName, userDefinedBrickListToPack)
+
+        BackpackListManager.getInstance().addUserDefinedBrickToBackPack(groupName, userDefinedBrickListToPack)
         BackpackListManager.getInstance().addScriptToBackPack(groupName, scriptsToPack)
         BackpackListManager.getInstance().saveBackpack()
     }
+
+    private fun checkForUserData(brick: Brick, groupName: String?) {
+        if (brick is UserVariableBrickInterface) {
+            createInitialHashmap(BackpackListManager.getInstance().backpack.backpackedUserVariables, groupName)
+
+            when {
+                projectManager.currentProject.userVariables.contains(brick.userVariable) ->
+                    addUserDataToBackpack(brick, groupName, GLOBAL_USER_VARIABLE)
+                projectManager.currentSprite.userVariables.contains(brick.userVariable) ->
+                    addUserDataToBackpack(brick, groupName, LOCAL_USER_VARIABLE)
+                projectManager.currentProject.multiplayerVariables.contains(brick.userVariable) ->
+                    addUserDataToBackpack(brick, groupName, MULTIPLAYER_USER_VARIABLE)
+            }
+        }
+
+        if (brick is UserListBrick) {
+            createInitialHashmap(BackpackListManager.getInstance().backpack.backpackedUserLists, groupName)
+
+            when {
+                projectManager.currentProject.userLists.contains(brick.userList) ->
+                    addUserDataToBackpack(brick, groupName, GLOBAL_USER_VARIABLE)
+                projectManager.currentSprite.userLists.contains(brick.userList) ->
+                    addUserDataToBackpack(brick, groupName, LOCAL_USER_VARIABLE)
+            }
+        }
+    }
+
+    private fun createInitialHashmap(map: HashMap<String?, HashMap<String, Int>>?, groupName: String?) {
+        if (map?.containsKey(groupName) == false) {
+            map[groupName] = HashMap()
+        }
+    }
+
+    private fun <T> addUserDataToBackpack(brick: T, groupName: String?, type: Int) {
+        var map: HashMap<String, Int>? = HashMap()
+        var name = String()
+
+        if (brick is UserVariableBrickInterface) {
+            map = BackpackListManager.getInstance().backpack.backpackedUserVariables[groupName]
+            name = brick.userVariable.name
+        } else if (brick is UserListBrick) {
+            map = BackpackListManager.getInstance().backpack.backpackedUserLists[groupName]
+            name = brick.userList.name
+        }
+
+        if (!isUserDataAlreadyInScript(map, name, type)) {
+            map?.set(name, type)
+        }
+    }
+
+    private fun isUserDataAlreadyInScript(map: HashMap<String, Int>?, userDataName: String, variableType: Int): Boolean = map?.get(userDataName) == variableType
 
     @Throws(IOException::class, CloneNotSupportedException::class)
     fun packForSprite(scriptToPack: Script, destinationSprite: Sprite) {
@@ -139,23 +197,23 @@ class ScriptController {
         for (brick in scriptFlatBrickList) {
             when (brick) {
                 is SetLookBrick ->
-                    brick.look = brick.look?.let {
-                        lookController.packForSprite(it, destinationSprite)
+                    brick.look = brick.look?.let { look ->
+                        lookController.packForSprite(look, destinationSprite)
                     }
 
                 is WhenBackgroundChangesBrick ->
-                    brick.look = brick.look?.let {
-                        lookController.packForSprite(it, destinationSprite)
+                    brick.look = brick.look?.let { look ->
+                        lookController.packForSprite(look, destinationSprite)
                     }
 
                 is PlaySoundBrick ->
-                    brick.sound = brick.sound?.let {
-                        soundController.packForSprite(it, destinationSprite)
+                    brick.sound = brick.sound?.let { sound ->
+                        soundController.packForSprite(sound, destinationSprite)
                     }
 
                 is PlaySoundAndWaitBrick ->
-                    brick.sound = brick.sound?.let {
-                        soundController.packForSprite(it, destinationSprite)
+                    brick.sound = brick.sound?.let { sound ->
+                        soundController.packForSprite(sound, destinationSprite)
                     }
             }
         }
@@ -163,7 +221,7 @@ class ScriptController {
     }
 
     @Throws(CloneNotSupportedException::class)
-    fun unpack(scriptToUnpack: Script, destinationSprite: Sprite) {
+    fun unpack(scriptName: String, scriptToUnpack: Script, destinationSprite: Sprite) {
         val script = scriptToUnpack.clone()
         copyBroadcastMessages(script.scriptBrick)
         for (brick in script.brickList) {
@@ -173,9 +231,96 @@ class ScriptController {
                 Log.e(TAG, "CANNOT insert bricks into ChromeCast project")
                 return
             }
+            unpackUserVariable(brick, scriptName)
+            unpackUserList(brick, scriptName)
             copyBroadcastMessages(brick)
         }
         destinationSprite.scriptList.add(script)
+    }
+
+    private fun unpackUserVariable(brick: Brick, scriptName: String) {
+        if (brick is UserVariableBrickInterface) {
+            val variableToCheck = brick.userVariable
+            val variableType: Int? =
+                BackpackListManager.getInstance().backpack.backpackedUserVariables[scriptName]?.get(variableToCheck.name)
+
+            var listToAddTo: MutableList<UserVariable> = projectManager.currentProject.userVariables
+
+            when (variableType) {
+                LOCAL_USER_VARIABLE -> listToAddTo = projectManager.currentSprite.userVariables
+                MULTIPLAYER_USER_VARIABLE -> listToAddTo = projectManager.currentProject.multiplayerVariables
+            }
+
+            addNewUserVariable(variableToCheck, listToAddTo, brick)
+        }
+    }
+
+    private fun unpackUserList(brick: Brick, scriptName: String) {
+        if (brick is UserListBrick) {
+            val listToCheck = brick.userList
+            val listType: Int? =
+                BackpackListManager.getInstance().backpack.backpackedUserLists[scriptName]?.get(listToCheck.name)
+
+            if (listType == GLOBAL_USER_VARIABLE) {
+                addNewUserList(listToCheck, projectManager.currentProject.userLists, brick)
+            } else if (listType == LOCAL_USER_VARIABLE) {
+                addNewUserList(listToCheck, projectManager.currentSprite.userLists, brick)
+            }
+        }
+    }
+
+    private fun addNewUserVariable(oldVariable: UserVariable, listToAddTo: MutableList<UserVariable>, brick: UserVariableBrickInterface) {
+        if (!listToAddTo.any { variable -> variable.name == oldVariable.name }) {
+            val newNameForVariable = UniqueNameProvider().getUniqueName(oldVariable.name, createListOfAllUserVariables())
+
+            val newUserVariable = UserVariable(oldVariable)
+            newUserVariable.name = newNameForVariable
+            listToAddTo.add(newUserVariable)
+            brick.userVariable = newUserVariable
+        }
+    }
+
+    private fun addNewUserList(oldList: UserList, listToAddTo: MutableList<UserList>, brick: UserListBrick) {
+        if (!listToAddTo.any { list -> list.name == oldList.name }) {
+            val newNameForList = UniqueNameProvider().getUniqueName(oldList.name, createListOfAllUserList())
+
+            val newUserList = UserList(oldList)
+            newUserList.name = newNameForList
+            listToAddTo.add(newUserList)
+            brick.userList = newUserList
+        }
+    }
+
+    private fun createListOfAllUserVariables(): List<String> {
+        val listOfAllVariables: ArrayList<String> = ArrayList()
+
+        for (variable in projectManager.currentProject.userVariables) {
+            listOfAllVariables.add(variable.name)
+        }
+
+        for (variable in projectManager.currentSprite.userVariables) {
+            listOfAllVariables.add(variable.name)
+        }
+
+        for (variable in projectManager.currentProject.multiplayerVariables) {
+            listOfAllVariables.add(variable.name)
+        }
+
+        return listOfAllVariables
+    }
+
+    private fun createListOfAllUserList(): List<String> {
+        val listOfAllLists: ArrayList<String> = ArrayList()
+
+        for (list in projectManager.currentProject.userLists) {
+            listOfAllLists.add(list.name)
+        }
+
+        for (list in projectManager.currentSprite.userLists) {
+            listOfAllLists.add(list.name)
+        }
+
+        return listOfAllLists
     }
 
     private fun copyBroadcastMessages(brick: Brick): Boolean {
@@ -253,7 +398,7 @@ class ScriptController {
         for (entry in brick.userDataMap.entries) {
             val previousUserData = entry.value
             var updatedUserList: UserData<*>?
-            val scope = destinationSprite?.let { Scope(destinationProject, it, null) }
+            val scope = destinationSprite?.let { sprite -> Scope(destinationProject, sprite, null) }
             updatedUserList = if (BrickData.isUserList(entry.key)) {
                 UserDataWrapper.getUserList(previousUserData?.name, scope)
             } else {
@@ -269,7 +414,7 @@ class ScriptController {
         destinationSprite: Sprite?
     ) {
         val previousUserList = brick.userList
-        val scope = destinationSprite?.let { Scope(destinationProject, it, null) }
+        val scope = destinationSprite?.let { sprite -> Scope(destinationProject, sprite, null) }
         val updatedUserList = UserDataWrapper.getUserList(previousUserList?.name, scope)
         brick.userList = updatedUserList
     }
@@ -280,7 +425,7 @@ class ScriptController {
         destinationSprite: Sprite?
     ) {
         val previousUserVar = brick.userVariable
-        val scope = destinationSprite?.let { Scope(destinationProject, it, null) }
+        val scope = destinationSprite?.let { sprite -> Scope(destinationProject, sprite, null) }
         val updatedUserVar =
             UserDataWrapper.getUserVariable(previousUserVar?.name, scope)
         brick.userVariable = updatedUserVar

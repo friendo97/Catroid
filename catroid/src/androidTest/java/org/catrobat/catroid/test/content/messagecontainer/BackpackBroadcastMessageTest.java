@@ -53,6 +53,7 @@ public class BackpackBroadcastMessageTest {
 	private final String firstMessage = "firstMessage";
 	private final String secondMessage = "secondMessage";
 	private final String thirdMessage = "thirdMessage";
+	private final String backpackGroupName = "Backpack";
 	private Script backpackedStartScript;
 	private Scene secondScene;
 	private BackpackListManager backpackListManager;
@@ -73,8 +74,8 @@ public class BackpackBroadcastMessageTest {
 	@Test
 	public void testUnpackBroadcastMessagesIntoNewScene() throws CloneNotSupportedException {
 		ScriptController scriptController = new ScriptController();
-		scriptController.pack("Backpack", backpackedStartScript.getBrickList());
-		scriptController.unpack(backpackedStartScript, ProjectManager.getInstance().getCurrentSprite());
+		scriptController.pack(backpackGroupName, backpackedStartScript.getBrickList());
+		scriptController.unpack(backpackGroupName, backpackedStartScript, ProjectManager.getInstance().getCurrentSprite());
 
 		Set<String> usedMessages = secondScene.getBroadcastMessagesInUse();
 		Assert.assertTrue(usedMessages.contains(firstMessage));
