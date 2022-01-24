@@ -28,12 +28,9 @@ import android.util.Log
 import com.google.mlkit.vision.common.InputImage
 import com.google.mlkit.vision.pose.PoseDetection
 import com.google.mlkit.vision.pose.defaults.PoseDetectorOptions
-import org.catrobat.catroid.CatroidApplication
-import org.catrobat.catroid.R
 import org.catrobat.catroid.camera.CatdroidImageAnalyzer
 import org.catrobat.catroid.camera.DetectorsCompleteListener
 import org.catrobat.catroid.camera.VisualDetectionHandler
-import org.catrobat.catroid.stage.StageActivity
 
 private val poseDetectionClient by lazy {
     PoseDetection.getClient(
@@ -58,16 +55,11 @@ object PoseDetector : Detector {
                     mediaImage.height
                 )
             }
-            .addOnFailureListener { e ->
-                val context = CatroidApplication.getAppContext()
-                StageActivity.messageHandler.obtainMessage(
-                    StageActivity.SHOW_TOAST,
-                    arrayListOf(context.getString(R.string.camera_error_pose_detection))
-                ).sendToTarget()
+            .addOnFailureListener { exception ->
                 Log.e(
                     javaClass.simpleName,
                     CatdroidImageAnalyzer.DETECTION_PROCESS_ERROR_MESSAGE,
-                    e
+                    exception
                 )
             }.addOnCompleteListener {
                 onCompleteListener.onComplete()

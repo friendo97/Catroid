@@ -168,6 +168,11 @@ public class StageResourceHolder implements GatherCollisionInformationTask.OnPol
 			connectBTDevice(BluetoothDevice.ARDUINO);
 		}
 
+		if (ProjectManager.getInstance().getCurrentProject().hasMultiplayerVariables()) {
+			requiredResourceCounter++;
+			connectBTDevice(BluetoothDevice.MULTIPLAYER);
+		}
+
 		if (requiredResourcesSet.contains(Brick.CAMERA_BACK)) {
 			if (getCameraManager().getHasBackCamera()) {
 				resourceInitialized();
@@ -232,6 +237,14 @@ public class StageResourceHolder implements GatherCollisionInformationTask.OnPol
 				resourceInitialized();
 			} else {
 				resourceFailed(Brick.FACE_DETECTION);
+			}
+		}
+
+		if (requiredResourcesSet.contains(Brick.OBJECT_DETECTION)) {
+			if (getCameraManager().startDetection()) {
+				resourceInitialized();
+			} else {
+				resourceFailed(Brick.OBJECT_DETECTION);
 			}
 		}
 
@@ -427,6 +440,10 @@ public class StageResourceHolder implements GatherCollisionInformationTask.OnPol
 				case Brick.FACE_DETECTION:
 					failedResourcesMessage.append(stageActivity.getString(R.string
 							.prestage_no_face_detection_available));
+					break;
+				case Brick.OBJECT_DETECTION:
+					failedResourcesMessage.append(stageActivity.getString(R.string
+							.prestage_no_object_detection_available));
 					break;
 				case Brick.SPEECH_RECOGNITION:
 					failedResourcesMessage.append(stageActivity.getString(R.string

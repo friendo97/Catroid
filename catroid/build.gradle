@@ -106,7 +106,7 @@ android {
     compileSdkVersion 30
 
     buildFeatures {
-        viewBinding = true
+        viewBinding true
     }
 
     defaultConfig {
@@ -251,7 +251,6 @@ android {
         release {
             buildConfigField "boolean", "FEATURE_MERGE_ENABLED", "false"
             buildConfigField "boolean", "FEATURE_POCKETMUSIC_ENABLED", "false"
-            buildConfigField "boolean", "FEATURE_MULTIPLAYER_VARIABLES_ENABLED", "false"
             buildConfigField "boolean", "FEATURE_USER_REPORTERS_ENABLED", "false"
             resValue "string", "SNACKBAR_HINTS_ENABLED", "true"
             signingConfig signingConfigs.debug
@@ -335,6 +334,10 @@ android {
     }
     productFlavors.all { flavor ->
         copyGoogleServicesFile(flavor.name, defaultConfig.applicationId + (flavor.applicationIdSuffix ?: ""))
+    }
+
+    aaptOptions {
+        noCompress "lite"
     }
 }
 
@@ -442,6 +445,7 @@ dependencies {
     // ML Kit
     implementation 'com.google.android.gms:play-services-mlkit-face-detection:16.1.4'
     implementation 'com.google.android.gms:play-services-mlkit-text-recognition:16.1.3'
+    implementation 'com.google.mlkit:object-detection:16.2.7'
     implementation 'com.google.mlkit:language-id:16.1.1'
     implementation 'com.google.mlkit:pose-detection:17.0.0'
 

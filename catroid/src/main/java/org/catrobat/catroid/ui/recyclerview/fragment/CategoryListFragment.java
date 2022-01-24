@@ -422,6 +422,10 @@ public class CategoryListFragment extends Fragment implements CategoryListRVAdap
 			R.string.formula_editor_function_text_block_parameter,
 			R.string.formula_editor_function_text_block_parameter,
 			R.string.formula_editor_function_text_block_parameter);
+	private static final List<Integer> SENSORS_OBJECT_DETECTION = asList(
+			R.string.formula_editor_function_get_id_of_detected_object,
+			R.string.formula_editor_function_object_with_id_visible
+	);
 	private static final List<Integer> SENSORS_DATE_TIME = asList(R.string.formula_editor_sensor_timer,
 			R.string.formula_editor_sensor_date_year, R.string.formula_editor_sensor_date_month,
 			R.string.formula_editor_sensor_date_day, R.string.formula_editor_sensor_date_weekday,
@@ -885,6 +889,7 @@ public class CategoryListFragment extends Fragment implements CategoryListRVAdap
 		result.addAll(getFaceSensorItems());
 		result.addAll(getPoseSensorItems());
 		result.addAll(getTextSensorItems());
+		result.addAll(getObjectDetectionSensorItems());
 		result.addAll(getDeviceSensorItems());
 		result.addAll(getTouchDetectionSensorItems());
 		result.addAll(getDateTimeSensorItems());
@@ -1025,6 +1030,13 @@ public class CategoryListFragment extends Fragment implements CategoryListRVAdap
 		return SettingsFragment.isAITextRecognitionSharedPreferenceEnabled(getActivity().getApplicationContext())
 				? addHeader(toCategoryListItems(SENSORS_TEXT_RECOGNITION, SENSORS_TEXT_RECOGNITION_PARAMS),
 				getString(R.string.formula_editor_device_text_recognition))
+				: Collections.emptyList();
+	}
+
+	private List<CategoryListItem> getObjectDetectionSensorItems() {
+		return SettingsFragment.isAIObjectDetectionSharedPreferenceEnabled(getActivity().getApplicationContext())
+				? addHeader(toCategoryListItems(SENSORS_OBJECT_DETECTION),
+				getString(R.string.formula_editor_device_object_recognition))
 				: Collections.emptyList();
 	}
 }

@@ -1,6 +1,6 @@
 /*
  * Catroid: An on-device visual programming system for Android devices
- * Copyright (C) 2010-2019 The Catrobat Team
+ * Copyright (C) 2010-2021 The Catrobat Team
  * (<http://developer.catrobat.org/credits>)
  *
  * This program is free software: you can redistribute it and/or modify
@@ -20,9 +20,15 @@
  * You should have received a copy of the GNU Affero General Public License
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
+package org.catrobat.catroid.devices.multiplayer
 
-package org.catrobat.catroid.formulaeditor.function;
+import org.catrobat.catroid.bluetooth.base.BluetoothDevice
+import org.catrobat.catroid.formulaeditor.UserVariable
+import java.io.InputStream
+import java.io.OutputStream
 
-public interface TernaryFunctionAction {
-	Double execute(Double firstArgument, Double secondArgument, Double thirdArgument);
+interface MultiplayerInterface : BluetoothDevice {
+    fun sendChangedMultiplayerVariables(multiplayerVariable: UserVariable?)
+    fun getChangedMultiplayerVariables(receivedData: ByteArray?)
+    fun setStreams(inputStream: InputStream?, outputStream: OutputStream?)
 }

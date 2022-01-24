@@ -129,6 +129,14 @@ class ScriptController {
                 val scriptToPack = brick.getScript()
                 scriptsToPack.add(scriptToPack.clone())
             }
+            if (brick is UserDefinedBrick) {
+                val userDefinedScript = projectManager.currentSprite.getUserDefinedScript(brick.userDefinedBrickID)
+
+                if (!checkIfUserDefinedBrickDefinitionIsInBricksToPack(bricksToPack, brick)) {
+                    scriptsToPack.add(userDefinedScript)
+                    userDefinedBrickListToPack.add(brick.clone() as UserDefinedBrick)
+                }
+            }
             checkForUserData(brick, groupName)
         }
 
@@ -187,6 +195,15 @@ class ScriptController {
     }
 
     private fun isUserDataAlreadyInScript(map: HashMap<String, Int>?, userDataName: String, variableType: Int): Boolean = map?.get(userDataName) == variableType
+
+    private fun checkIfUserDefinedBrickDefinitionIsInBricksToPack(bricksToPack: List<Brick>?, userDefinedBrick: UserDefinedBrick): Boolean {
+        bricksToPack?.forEach { brick ->
+            if (brick is UserDefinedReceiverBrick && brick.userDefinedBrick.userDefinedBrickID.equals(userDefinedBrick.userDefinedBrickID)) {
+                return true
+            }
+        }
+        return false
+    }
 
     @Throws(IOException::class, CloneNotSupportedException::class)
     fun packForSprite(scriptToPack: Script, destinationSprite: Sprite) {
