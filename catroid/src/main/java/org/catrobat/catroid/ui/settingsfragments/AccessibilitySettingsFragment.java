@@ -26,9 +26,6 @@ package org.catrobat.catroid.ui.settingsfragments;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.os.Bundle;
-import android.preference.Preference;
-import android.preference.PreferenceFragment;
-import android.preference.PreferenceScreen;
 
 import org.catrobat.catroid.R;
 import org.catrobat.catroid.ui.MainMenuActivity;
@@ -37,8 +34,10 @@ import org.catrobat.catroid.utils.ToastUtil;
 
 import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.preference.Preference;
+import androidx.preference.PreferenceFragmentCompat;
 
-public class AccessibilitySettingsFragment extends PreferenceFragment implements SharedPreferences.OnSharedPreferenceChangeListener {
+public class AccessibilitySettingsFragment extends PreferenceFragmentCompat implements SharedPreferences.OnSharedPreferenceChangeListener {
 
 	public static final String TAG = AccessibilitySettingsFragment.class.getSimpleName();
 
@@ -47,8 +46,7 @@ public class AccessibilitySettingsFragment extends PreferenceFragment implements
 	static final String CUSTOM_PROFILE = "accessibility_profile_is_custom";
 
 	@Override
-	public void onCreate(@Nullable Bundle savedInstanceState) {
-		super.onCreate(savedInstanceState);
+	public void onCreatePreferences(Bundle savedInstanceState, String rootKey) {
 		addPreferencesFromResource(R.xml.accessibility_preferences);
 	}
 
@@ -91,17 +89,17 @@ public class AccessibilitySettingsFragment extends PreferenceFragment implements
 	}
 
 	@Override
-	public boolean onPreferenceTreeClick(PreferenceScreen preferenceScreen, Preference preference) {
+	public boolean onPreferenceTreeClick(Preference preference) {
 		String key = preference.getKey();
 		switch (key) {
 			case ACCESSIBILITY_PROFILES_SCREEN_KEY:
-				getFragmentManager().beginTransaction()
+				getParentFragmentManager().beginTransaction()
 						.replace(R.id.content_frame, new AccessibilityProfilesFragment(),
 								AccessibilityProfilesFragment.TAG)
 						.addToBackStack(AccessibilityProfilesFragment.TAG)
 						.commit();
 				break;
 		}
-		return super.onPreferenceTreeClick(preferenceScreen, preference);
+		return super.onPreferenceTreeClick(preference);
 	}
 }

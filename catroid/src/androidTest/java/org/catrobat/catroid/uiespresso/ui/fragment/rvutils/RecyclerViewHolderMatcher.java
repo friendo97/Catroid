@@ -23,6 +23,8 @@
 
 package org.catrobat.catroid.uiespresso.ui.fragment.rvutils;
 
+import android.view.View;
+
 import org.catrobat.catroid.ui.recyclerview.viewholder.ViewHolder;
 import org.hamcrest.Description;
 import org.hamcrest.Matcher;
@@ -37,6 +39,19 @@ public class RecyclerViewHolderMatcher {
 
 			public boolean matchesSafely(ViewHolder viewHolder) {
 				return viewHolder.title.getText().equals(text);
+			}
+		};
+	}
+
+	public Matcher<View> withText(final long resourceId) {
+		return new TypeSafeMatcher<View>() {
+			public void describeTo(Description description) {
+				description.appendText("RecyclerViewItemMatcher withText: " + resourceId + "does not "
+						+ "match the view");
+			}
+
+			public boolean matchesSafely(View view) {
+				return view.getId() == resourceId;
 			}
 		};
 	}

@@ -25,19 +25,18 @@ package org.catrobat.catroid.ui.settingsfragments;
 
 import android.content.Context;
 import android.os.Bundle;
-import android.preference.CheckBoxPreference;
-import android.preference.EditTextPreference;
-import android.preference.Preference;
-import android.preference.PreferenceCategory;
-import android.preference.PreferenceFragment;
-import android.preference.PreferenceManager;
-import android.preference.PreferenceScreen;
 
 import org.catrobat.catroid.BuildConfig;
 import org.catrobat.catroid.R;
 
-import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.preference.CheckBoxPreference;
+import androidx.preference.EditTextPreference;
+import androidx.preference.Preference;
+import androidx.preference.PreferenceCategory;
+import androidx.preference.PreferenceFragmentCompat;
+import androidx.preference.PreferenceManager;
+import androidx.preference.PreferenceScreen;
 
 import static org.catrobat.catroid.ui.settingsfragments.SettingsFragment.RASPBERRY_SCREEN_KEY;
 import static org.catrobat.catroid.ui.settingsfragments.SettingsFragment.RASPI_CONNECTION_SETTINGS_CATEGORY;
@@ -45,7 +44,7 @@ import static org.catrobat.catroid.ui.settingsfragments.SettingsFragment.RASPI_H
 import static org.catrobat.catroid.ui.settingsfragments.SettingsFragment.RASPI_PORT;
 import static org.catrobat.catroid.ui.settingsfragments.SettingsFragment.SETTINGS_SHOW_RASPI_BRICKS;
 
-public class RaspberryPiSettingsFragment extends PreferenceFragment {
+public class RaspberryPiSettingsFragment extends PreferenceFragmentCompat {
 
 	public static final String TAG = RaspberryPiSettingsFragment.class.getSimpleName();
 
@@ -56,8 +55,7 @@ public class RaspberryPiSettingsFragment extends PreferenceFragment {
 	}
 
 	@Override
-	public void onActivityCreated(@Nullable Bundle savedInstanceState) {
-		super.onActivityCreated(savedInstanceState);
+	public void onCreatePreferences(Bundle savedInstanceState, String rootKey) {
 		SettingsFragment.setToChosenLanguage(getActivity());
 		addPreferencesFromResource(R.xml.raspberry_preferences);
 

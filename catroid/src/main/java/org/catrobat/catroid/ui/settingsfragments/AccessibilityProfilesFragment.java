@@ -23,7 +23,6 @@
 
 package org.catrobat.catroid.ui.settingsfragments;
 
-import android.app.Fragment;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.os.Bundle;
@@ -43,6 +42,7 @@ import org.catrobat.catroid.utils.ToastUtil;
 import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.core.content.ContextCompat;
+import androidx.fragment.app.Fragment;
 
 import static org.catrobat.catroid.common.SharedPreferenceKeys.ACCESSIBILITY_PROFILE_PREFERENCE_KEY;
 import static org.catrobat.catroid.ui.settingsfragments.AccessibilityProfile.BEGINNER_BRICKS;

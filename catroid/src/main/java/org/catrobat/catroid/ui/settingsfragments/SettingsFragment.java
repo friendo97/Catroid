@@ -29,12 +29,6 @@ import android.content.SharedPreferences;
 import android.content.res.Configuration;
 import android.content.res.Resources;
 import android.os.Bundle;
-import android.preference.CheckBoxPreference;
-import android.preference.ListPreference;
-import android.preference.Preference;
-import android.preference.PreferenceFragment;
-import android.preference.PreferenceManager;
-import android.preference.PreferenceScreen;
 import android.util.DisplayMetrics;
 
 import org.catrobat.catroid.BuildConfig;
@@ -46,7 +40,6 @@ import org.catrobat.catroid.devices.mindstorms.nxt.sensors.NXTSensor;
 import org.catrobat.catroid.formulaeditor.SensorHandler;
 import org.catrobat.catroid.sync.ProjectsCategoriesSync;
 import org.catrobat.catroid.ui.MainMenuActivity;
-import org.catrobat.catroid.utils.SnackbarUtil;
 
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -55,6 +48,12 @@ import java.util.Locale;
 
 import androidx.annotation.VisibleForTesting;
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.preference.CheckBoxPreference;
+import androidx.preference.ListPreference;
+import androidx.preference.Preference;
+import androidx.preference.PreferenceFragmentCompat;
+import androidx.preference.PreferenceManager;
+import androidx.preference.PreferenceScreen;
 
 import static org.catrobat.catroid.CatroidApplication.defaultSystemLanguage;
 import static org.catrobat.catroid.common.SharedPreferenceKeys.DEVICE_LANGUAGE;
@@ -62,7 +61,7 @@ import static org.catrobat.catroid.common.SharedPreferenceKeys.LANGUAGE_TAGS;
 import static org.catrobat.catroid.common.SharedPreferenceKeys.LANGUAGE_TAG_KEY;
 import static org.koin.java.KoinJavaComponent.inject;
 
-public class SettingsFragment extends PreferenceFragment {
+public class SettingsFragment extends PreferenceFragmentCompat {
 
 	public static final String SETTINGS_MINDSTORMS_NXT_BRICKS_ENABLED = "settings_mindstorms_nxt_bricks_enabled";
 	public static final String SETTINGS_MINDSTORMS_NXT_SHOW_SENSOR_INFO_BOX_DISABLED = "settings_mindstorms_nxt_show_sensor_info_box_disabled";
@@ -131,10 +130,9 @@ public class SettingsFragment extends PreferenceFragment {
 
 	public static final String SETTINGS_USE_CATBLOCKS = "settings_use_catblocks";
 
-	@SuppressWarnings("deprecation")
 	@Override
-	public void onCreate(Bundle savedInstanceState) {
-		super.onCreate(savedInstanceState);
+	public void onCreatePreferences(Bundle savedInstanceState, String rootKey) {
+//		super.onCreate(savedInstanceState);
 		setToChosenLanguage(getActivity());
 
 		addPreferencesFromResource(R.xml.preferences);
@@ -207,60 +205,56 @@ public class SettingsFragment extends PreferenceFragment {
 	}
 
 	@Override
-	public boolean onPreferenceTreeClick(PreferenceScreen preferenceScreen, Preference preference) {
+	public boolean onPreferenceTreeClick(Preference preference) {
 		String key = preference.getKey();
 		switch (key) {
 			case AI_SENSORS_SCREEN_KEY:
-				getFragmentManager().beginTransaction()
+				getParentFragmentManager().beginTransaction()
 						.replace(R.id.content_frame, new AISettingsFragment(),
 								AISettingsFragment.Companion.getTAG())
 						.addToBackStack(AISettingsFragment.Companion.getTAG())
 						.commit();
 				break;
 			case ACCESSIBILITY_SCREEN_KEY:
-				getFragmentManager().beginTransaction()
+				getParentFragmentManager().beginTransaction()
 						.replace(R.id.content_frame, new AccessibilitySettingsFragment(), AccessibilitySettingsFragment.TAG)
 						.addToBackStack(AccessibilitySettingsFragment.TAG)
 						.commit();
 				break;
 			case NXT_SCREEN_KEY:
-				getFragmentManager().beginTransaction()
+				getParentFragmentManager().beginTransaction()
 						.replace(R.id.content_frame, new NXTSensorsSettingsFragment(), NXTSensorsSettingsFragment.TAG)
 						.addToBackStack(NXTSensorsSettingsFragment.TAG)
 						.commit();
 				break;
 			case EV3_SCREEN_KEY:
-				getFragmentManager().beginTransaction()
+				getParentFragmentManager().beginTransaction()
 						.replace(R.id.content_frame, new Ev3SensorsSettingsFragment(), Ev3SensorsSettingsFragment.TAG)
 						.addToBackStack(Ev3SensorsSettingsFragment.TAG)
 						.commit();
 				break;
 			case DRONE_SCREEN_KEY:
-				getFragmentManager().beginTransaction()
+				getParentFragmentManager().beginTransaction()
 						.replace(R.id.content_frame, new ParrotARDroneSettingsFragment(),
 								ParrotARDroneSettingsFragment.TAG)
 						.addToBackStack(ParrotARDroneSettingsFragment.TAG)
 						.commit();
 				break;
 			case RASPBERRY_SCREEN_KEY:
-				getFragmentManager().beginTransaction()
+				getParentFragmentManager().beginTransaction()
 						.replace(R.id.content_frame, new RaspberryPiSettingsFragment(), RaspberryPiSettingsFragment.TAG)
 						.addToBackStack(RaspberryPiSettingsFragment.TAG)
 						.commit();
 				break;
 		}
-		return super.onPreferenceTreeClick(preferenceScreen, preference);
+		return super.onPreferenceTreeClick(preference);
 	}
 
-	@SuppressWarnings("deprecation")
 	private void setHintPreferences() {
 		CheckBoxPreference hintCheckBoxPreference = (CheckBoxPreference) findPreference(SETTINGS_SHOW_HINTS);
-		hintCheckBoxPreference.setOnPreferenceChangeListener(new Preference.OnPreferenceChangeListener() {
-			@Override
-			public boolean onPreferenceChange(Preference preference, Object newValue) {
-				preference.getEditor().remove(SnackbarUtil.SHOWN_HINT_LIST).commit();
-				return true;
-			}
+		hintCheckBoxPreference.setOnPreferenceChangeListener((preference, newValue) -> {
+//			preference.getEditor().remove(SnackbarUtil.SHOWN_HINT_LIST).commit();
+			return true;
 		});
 	}
 

@@ -24,23 +24,22 @@
 package org.catrobat.catroid.ui.settingsfragments;
 
 import android.os.Bundle;
-import android.preference.CheckBoxPreference;
-import android.preference.ListPreference;
-import android.preference.Preference;
-import android.preference.PreferenceCategory;
-import android.preference.PreferenceFragment;
-import android.preference.PreferenceScreen;
 
 import org.catrobat.catroid.BuildConfig;
 import org.catrobat.catroid.R;
 import org.catrobat.catroid.devices.mindstorms.nxt.sensors.NXTSensor;
 
-import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.preference.CheckBoxPreference;
+import androidx.preference.ListPreference;
+import androidx.preference.Preference;
+import androidx.preference.PreferenceCategory;
+import androidx.preference.PreferenceFragmentCompat;
+import androidx.preference.PreferenceScreen;
 
 import static org.catrobat.catroid.ui.settingsfragments.SettingsFragment.NXT_SENSORS;
 
-public class NXTSensorsSettingsFragment extends PreferenceFragment {
+public class NXTSensorsSettingsFragment extends PreferenceFragmentCompat {
 	public static final String TAG = NXTSensorsSettingsFragment.class.getSimpleName();
 
 	@Override
@@ -50,8 +49,7 @@ public class NXTSensorsSettingsFragment extends PreferenceFragment {
 	}
 
 	@Override
-	public void onActivityCreated(@Nullable Bundle savedInstanceState) {
-		super.onActivityCreated(savedInstanceState);
+	public void onCreatePreferences(Bundle savedInstanceState, String rootKey) {
 		SettingsFragment.setToChosenLanguage(getActivity());
 
 		addPreferencesFromResource(R.xml.nxt_preferences);

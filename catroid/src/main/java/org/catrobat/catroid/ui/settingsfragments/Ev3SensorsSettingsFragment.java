@@ -24,25 +24,24 @@
 package org.catrobat.catroid.ui.settingsfragments;
 
 import android.os.Bundle;
-import android.preference.CheckBoxPreference;
-import android.preference.ListPreference;
-import android.preference.Preference;
-import android.preference.PreferenceCategory;
-import android.preference.PreferenceFragment;
 
 import org.catrobat.catroid.BuildConfig;
 import org.catrobat.catroid.R;
 import org.catrobat.catroid.devices.mindstorms.ev3.sensors.EV3Sensor;
 
-import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.preference.CheckBoxPreference;
+import androidx.preference.ListPreference;
+import androidx.preference.Preference;
+import androidx.preference.PreferenceCategory;
+import androidx.preference.PreferenceFragmentCompat;
 
 import static org.catrobat.catroid.ui.settingsfragments.SettingsFragment.EV3_SCREEN_KEY;
 import static org.catrobat.catroid.ui.settingsfragments.SettingsFragment.EV3_SENSORS;
 import static org.catrobat.catroid.ui.settingsfragments.SettingsFragment.EV3_SETTINGS_CATEGORY;
 import static org.catrobat.catroid.ui.settingsfragments.SettingsFragment.SETTINGS_MINDSTORMS_EV3_BRICKS_ENABLED;
 
-public class Ev3SensorsSettingsFragment extends PreferenceFragment {
+public class Ev3SensorsSettingsFragment extends PreferenceFragmentCompat {
 	public static final String TAG = Ev3SensorsSettingsFragment.class.getSimpleName();
 
 	@Override
@@ -52,8 +51,7 @@ public class Ev3SensorsSettingsFragment extends PreferenceFragment {
 	}
 
 	@Override
-	public void onActivityCreated(@Nullable Bundle savedInstanceState) {
-		super.onActivityCreated(savedInstanceState);
+	public void onCreatePreferences(Bundle savedInstanceState, String rootKey) {
 		SettingsFragment.setToChosenLanguage(getActivity());
 
 		addPreferencesFromResource(R.xml.ev3_preferences);

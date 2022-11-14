@@ -24,19 +24,18 @@
 package org.catrobat.catroid.ui.settingsfragments;
 
 import android.os.Bundle;
-import android.preference.CheckBoxPreference;
-import android.preference.ListPreference;
-import android.preference.Preference;
-import android.preference.PreferenceCategory;
-import android.preference.PreferenceFragment;
-import android.preference.PreferenceScreen;
 
 import org.catrobat.catroid.BuildConfig;
 import org.catrobat.catroid.R;
 import org.catrobat.catroid.common.DroneConfigPreference;
 
-import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.preference.CheckBoxPreference;
+import androidx.preference.ListPreference;
+import androidx.preference.Preference;
+import androidx.preference.PreferenceCategory;
+import androidx.preference.PreferenceFragmentCompat;
+import androidx.preference.PreferenceScreen;
 
 import static org.catrobat.catroid.ui.settingsfragments.SettingsFragment.DRONE_ALTITUDE_LIMIT;
 import static org.catrobat.catroid.ui.settingsfragments.SettingsFragment.DRONE_CONFIGS;
@@ -47,7 +46,7 @@ import static org.catrobat.catroid.ui.settingsfragments.SettingsFragment.DRONE_T
 import static org.catrobat.catroid.ui.settingsfragments.SettingsFragment.DRONE_VERTICAL_SPEED;
 import static org.catrobat.catroid.ui.settingsfragments.SettingsFragment.SETTINGS_SHOW_PARROT_AR_DRONE_BRICKS;
 
-public class ParrotARDroneSettingsFragment extends PreferenceFragment {
+public class ParrotARDroneSettingsFragment extends PreferenceFragmentCompat {
 
 	public static final String TAG = ParrotARDroneSettingsFragment.class.getSimpleName();
 
@@ -58,8 +57,7 @@ public class ParrotARDroneSettingsFragment extends PreferenceFragment {
 	}
 
 	@Override
-	public void onActivityCreated(@Nullable Bundle savedInstanceState) {
-		super.onActivityCreated(savedInstanceState);
+	public void onCreatePreferences(Bundle savedInstanceState, String rootKey) {
 		SettingsFragment.setToChosenLanguage(getActivity());
 		addPreferencesFromResource(R.xml.drone_preferences);
 

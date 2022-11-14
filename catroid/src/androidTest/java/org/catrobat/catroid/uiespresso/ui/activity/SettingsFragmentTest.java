@@ -35,6 +35,7 @@ import org.catrobat.catroid.common.Constants;
 import org.catrobat.catroid.testsuites.annotations.Cat;
 import org.catrobat.catroid.testsuites.annotations.Level;
 import org.catrobat.catroid.ui.SettingsActivity;
+import org.catrobat.catroid.uiespresso.ui.fragment.rvutils.RecyclerViewHolderMatcher;
 import org.catrobat.catroid.uiespresso.util.rules.BaseActivityTestRule;
 import org.hamcrest.Matcher;
 import org.junit.After;
@@ -81,6 +82,7 @@ import static org.catrobat.catroid.ui.settingsfragments.SettingsFragment.SETTING
 import static org.catrobat.catroid.ui.settingsfragments.SettingsFragment.SETTINGS_SHOW_PARROT_AR_DRONE_BRICKS;
 import static org.catrobat.catroid.ui.settingsfragments.SettingsFragment.SETTINGS_SHOW_PHIRO_BRICKS;
 import static org.catrobat.catroid.ui.settingsfragments.SettingsFragment.SETTINGS_SHOW_RASPI_BRICKS;
+import static org.catrobat.catroid.uiespresso.ui.fragment.rvutils.RecyclerViewInteractionWrapper.onRecyclerView;
 import static org.hamcrest.Matchers.hasToString;
 import static org.hamcrest.Matchers.instanceOf;
 import static org.hamcrest.core.AllOf.allOf;
@@ -286,12 +288,20 @@ public class SettingsFragmentTest {
 		SharedPreferences sharedPreferences = PreferenceManager
 				.getDefaultSharedPreferences(ApplicationProvider.getApplicationContext());
 
-		onData(PreferenceMatchers.withTitle(displayedTitleResourceString))
+		//onData(PreferenceMatchers.withTitle(displayedTitleResourceString))
+		//		.perform(click());
+
+		//onView(withText(displayedTitleResourceString))
+		//		.perform(click());
+
+		//onRecyclerView().atPosition(0).perform(click());
+
+		onView(new RecyclerViewHolderMatcher().withText(R.string.preference_description_language))
 				.perform(click());
 
 		assertFalse(sharedPreferences.getBoolean(sharedPreferenceTag, false));
 
-		onData(PreferenceMatchers.withTitle(displayedTitleResourceString))
+		onView(new RecyclerViewHolderMatcher().withText(R.string.preference_description_language))
 				.perform(click());
 
 		assertTrue(sharedPreferences.getBoolean(sharedPreferenceTag, false));

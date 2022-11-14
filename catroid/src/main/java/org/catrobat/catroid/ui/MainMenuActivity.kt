@@ -28,7 +28,6 @@ import android.content.Intent
 import android.net.Uri
 import android.os.Build
 import android.os.Bundle
-import android.preference.PreferenceManager
 import android.text.Html
 import android.text.Spannable
 import android.text.SpannableString
@@ -40,6 +39,7 @@ import android.view.Menu
 import android.view.MenuItem
 import androidx.appcompat.app.AlertDialog
 import androidx.core.text.HtmlCompat
+import androidx.preference.PreferenceManager
 import org.catrobat.catroid.BuildConfig
 import org.catrobat.catroid.ProjectManager
 import org.catrobat.catroid.R

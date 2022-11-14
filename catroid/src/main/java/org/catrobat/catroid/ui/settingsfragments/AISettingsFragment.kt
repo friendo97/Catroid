@@ -23,31 +23,40 @@
 package org.catrobat.catroid.ui.settingsfragments
 
 import android.os.Bundle
-import android.preference.PreferenceFragment
-import android.preference.PreferenceScreen
 import androidx.appcompat.app.AppCompatActivity
+import androidx.preference.Preference
+import androidx.preference.PreferenceFragmentCompat
 import org.catrobat.catroid.BuildConfig
 import org.catrobat.catroid.R
-
 import org.catrobat.catroid.ui.settingsfragments.SettingsFragment.AI_SENSORS_SCREEN_KEY
 
-class AISettingsFragment : PreferenceFragment() {
+class AISettingsFragment : PreferenceFragmentCompat() {
     override fun onResume() {
         super.onResume()
         (activity as AppCompatActivity).supportActionBar?.title = preferenceScreen.title
     }
 
-    override fun onActivityCreated(savedInstanceState: Bundle?) {
-        super.onActivityCreated(savedInstanceState)
+    override fun onCreatePreferences(savedInstanceState: Bundle?, rootKey: String?) {
         SettingsFragment.setToChosenLanguage(activity)
         addPreferencesFromResource(R.xml.ai_preferences)
         if (!BuildConfig.FEATURE_AI_SENSORS_ENABLED) {
-            val aiSensorsPreference =
-                findPreference(AI_SENSORS_SCREEN_KEY) as PreferenceScreen
-            aiSensorsPreference.isEnabled = false
+            val aiSensorsPreference: Preference? = findPreference(AI_SENSORS_SCREEN_KEY)
+            aiSensorsPreference?.isEnabled = false
             preferenceScreen.removePreference(aiSensorsPreference)
         }
     }
+
+//    override fun onActivityCreated(savedInstanceState: Bundle?) {
+//        super.onActivityCreated(savedInstanceState)
+//        SettingsFragment.setToChosenLanguage(activity)
+//        addPreferencesFromResource(R.xml.ai_preferences)
+//        if (!BuildConfig.FEATURE_AI_SENSORS_ENABLED) {
+//            val aiSensorsPreference =
+//                findPreference(AI_SENSORS_SCREEN_KEY)
+//            aiSensorsPreference.isEnabled = false
+//            preferenceScreen.removePreference(aiSensorsPreference)
+//        }
+//    }
 
     companion object {
         val TAG = AISettingsFragment::class.java.simpleName
